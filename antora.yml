@@ -1,7 +1,0 @@
-name: rke2-ad
-title: RKE2 Documentation
-version: main
-display_version: 'main'
-start_page: ROOT:introduction.adoc
-nav:
-- modules/ROOT/nav.adoc
