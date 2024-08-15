@@ -1,7 +1,7 @@
 name: rke2-ad-chinese
-title: RKE2
+title: RKE2 (Chinese)
 version: main
-display_version: 'v2.9-Chinese'
+display_version: 'v2.9'
 start_page: ROOT:introduction.adoc
 nav:
 - modules/ROOT/nav_test.adoc
