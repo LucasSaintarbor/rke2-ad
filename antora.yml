@@ -1,0 +1,7 @@
+name: rke2-ad
+title: RKE2 (Chinese)
+version: main
+# display_version: 'v1.30'
+start_page: ROOT:introduction.adoc
+nav:
+- modules_en/ROOT/nav.adoc
