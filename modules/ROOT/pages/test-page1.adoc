@@ -1,1 +1,0 @@
-xref:test-page2.adoc[page2]
