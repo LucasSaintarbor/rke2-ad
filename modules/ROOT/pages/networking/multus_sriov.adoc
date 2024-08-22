@@ -50,17 +50,63 @@ To use any of these plugins, a proper NetworkAttachmentDefinition object will ne
 
 [tabs,sync-group-id=MultusIPAMplugins]
 ====
-Tab host-local::
+host-local::
 +
 host-local IPAM plugin allocates ip addresses out of a set of address ranges. It stores the state locally on the host filesystem, therefore ensuring uniqueness of IP addresses on a single host. Therefore, we don't recommend it for multi-node clusters. This IPAM plugin does not require any extra deployment. For more information: https://www.cni.dev/plugins/current/ipam/host-local/. 
 
 Tab Multus DHCP daemon::
 +
-Multus provides an optional daemonset to deploy the DHCP daemon required to run the [DHCP IPAM plugin](https://www.cni.dev/plugins/current/ipam/dhcp/). You can do this by using the following [HelmChartConfig](../helm.md#customizing-packaged-components-with-helmchartconfig): ```yaml # /var/lib/rancher/rke2/server/manifests/rke2-multus-config.yaml --- apiVersion: helm.cattle.io/v1 kind: HelmChartConfig metadata: name: rke2-multus namespace: kube-system spec: valuesContent: |- manifests: dhcpDaemonSet: true ``` This will configure the chart for Multus to deploy the DHCP daemonset. This feature is available starting with the 2024-01 releases (v1.29.1+rke2r1, v1.28.6+rke2r1, v1.27.10+rke2r1, v1.26.13+rke2r1). NOTE: You should write this file before starting rke2. 
+--
+Multus provides an optional daemonset to deploy the DHCP daemon required to run the https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAM plugin]. You can do this by using the following xref:../helm.adoc#_customizing_packaged_components_with_helmchartconfig[HelmChartConfig]:
+
+[,yaml]
+----
+# /var/lib/rancher/rke2/server/manifests/rke2-multus-config.yaml
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-multus
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    manifests:
+      dhcpDaemonSet: true
+----
+
+This will configure the chart for Multus to deploy the DHCP daemonset. This feature is available starting with the 2024-01 releases (v1.29.1+rke2r1, v1.28.6+rke2r1, v1.27.10+rke2r1, v1.26.13+rke2r1). 
+
+[NOTE] 
+You should write this file before starting rke2. 
+--
 
 Tab Whereabouts::
 +
-[Whereabouts](https://github.com/k8snetworkplumbingwg/whereabouts) is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide. RKE2 includes the option to use Whereabouts with Multus to manage the IP addresses of the additional interfaces created through Multus. In order to do this, you need to use [HelmChartConfig](../helm.md#customizing-packaged-components-with-helmchartconfig) to configure the Multus CNI to use Whereabouts. You can do this by using the following HelmChartConfig: ```yaml # /var/lib/rancher/rke2/server/manifests/rke2-multus-config.yaml --- apiVersion: helm.cattle.io/v1 kind: HelmChartConfig metadata: name: rke2-multus namespace: kube-system spec: valuesContent: |- rke2-whereabouts: enabled: true ``` This will configure the chart for Multus to use `rke2-whereabouts` as a dependency. NOTE: You should write this file before starting rke2.
+--
+https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide. RKE2 includes the option to use Whereabouts with Multus to manage the IP addresses of the additional interfaces created through Multus. In order to do this, you need to use xref:../helm.adoc#_customizing_packaged_components_with_helmchartconfig[HelmChartConfig] to configure theMultus CNI to use Whereabouts. 
+
+You can do this by using the following HelmChartConfig:
+
+[,yaml]
+----
+# /var/lib/rancher/rke2/server/manifests/rke2-multus-config.yaml
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-multus
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    rke2-whereabouts:
+      enabled: true
+----
+
+This will configure the chart for Multus to use `rke2-whereabouts` as a dependency. 
+
+[NOTE]
+You should write this file before starting rke2.
+--
 ====
 
 == Using Multus with SR-IOV
@@ -91,4 +137,4 @@ For more information, see the https://kubernetes-sigs.github.io/node-feature-dis
 
 However, the latest versions of the sriov-network-operator also include a whitelist of supported hardware so sriov will actually be available only with the NICs on https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/supported-hardware.md[that list]. If you want to use the SR-IOV CNI with a NIC that is not on the list, you will need to update the `supported-nic-ids` configMap yourself.
 
-For more information about how to use the SR-IOV operator, please refer to https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md#configuration[sriov-network-operator]
+For more information about how to use the SR-IOV operator, please refer to https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md#configuration[sriov-network-operator].

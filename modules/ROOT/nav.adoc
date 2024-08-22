@@ -1,4 +1,4 @@
-* xref:introduction_en.adoc[Introduction]
+* xref:introduction.adoc[Introduction]
 
 * Installation
 ** xref:install/quickstart.adoc[Quick Start]
@@ -38,7 +38,7 @@
 
 * Networking
 ** xref:networking/basic_network_options.adoc[Network Options]
-** xref:networking/networking_sriov.adoc[Multus and SR-IOV]
+** xref:networking/multus_sriov.adoc[Multus and SR-IOV]
 ** xref:networking/networking_services.adoc[Networking Services]
 
 * xref:helm.adoc[Helm Integration]

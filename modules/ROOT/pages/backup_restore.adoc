@@ -10,7 +10,7 @@ Snapshots are enabled by default.
 
 The snapshot directory defaults to `/var/lib/rancher/rke2/server/db/snapshots`.
 
-To configure the snapshot interval or the number of retained snapshots, refer to the <<options,options.>>
+To configure the snapshot interval or the number of retained snapshots, refer to the <<Options,options.>>
 
 In RKE2, snapshots are stored on each etcd node. If you have multiple etcd or etcd + control-plane nodes, you will have multiple copies of local etcd snapshots.
 
@@ -74,7 +74,7 @@ When rke2 resets the cluster, it creates an empty file at `/var/lib/rancher/rke2
 
 === Restoring a Snapshot to New Nodes
 
-WARNING: For all versions of rke2 v.1.20.9 and prior, you will need to back up and restore certificates first due to a known issue in which bootstrap data might not save on restore (Steps 1 - 3 below assume this scenario). See <<other-notes-on-restoring-a-snapshot,note>> below for an additional version-specific restore caveat on restore.
+WARNING: For all versions of rke2 v.1.20.9 and prior, you will need to back up and restore certificates first due to a known issue in which bootstrap data might not save on restore (Steps 1 - 3 below assume this scenario). See <<Other Notes on Restoring a Snapshot,note>> below for an additional version-specific restore caveat on restore.
 
 . Back up the following: `/var/lib/rancher/rke2/server/cred`, `/var/lib/rancher/rke2/server/tls`, `/var/lib/rancher/rke2/server/token`, `/etc/rancher`
 . Restore the certs in Step 1 above to the first new server node.
@@ -99,7 +99,7 @@ rke2 server \
 systemctl start rke2-server
 ----
 
-. You can continue to add new server and worker nodes to cluster per standard link:install/ha.adoc#3-launch-additional-server-nodes[RKE2 HA installation documentation].
+. You can continue to add new server and worker nodes to cluster per standard xref:install/ha.adoc#_3_launch_additional_server_nodes[RKE2 HA installation documentation].
 
 === Other Notes on Restoring a Snapshot
 

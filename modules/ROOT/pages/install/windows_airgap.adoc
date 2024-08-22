@@ -1,8 +1,8 @@
 = Windows Air-Gap Install
 
-*Windows Support requires choosing Calico or Flannel as the CNI for the RKE2 cluster*
+*Windows Support requires choosing Calico or Flannel as the CNI for the RKE2 cluster.*
 
-RKE2 Windows Agent (Worker) Nodes can be used in an air-gapped environment with two different methods. This requires first completing the RKE2 xref:./airgap.adoc[airgap setup]
+RKE2 Windows Agent (Worker) Nodes can be used in an air-gapped environment with two different methods. This requires first completing the RKE2 xref:./airgap.adoc[airgap setup].
 
 You can either deploy using the `rke2-windows-<BUILD_VERSION>-amd64-images.tar.gz` tarball release artifact, or by using a private registry. There are currently three tarball artifacts released for Windows in accordance with our validated xref:./requirements.adoc#_windows[Windows versions].
 
@@ -14,7 +14,7 @@ All files mentioned in the steps can be obtained from the assets of the desired 
 
 ==== Prepare the Windows Agent Node
 
-*Note* The Windows Server Containers feature needs to be enabled for the RKE2 agent to work.
+NOTE: The Windows Server Containers feature needs to be enabled for the RKE2 agent to work.
 
 Open a new Powershell window with Administrator privileges
 
@@ -36,9 +36,10 @@ This will require a reboot for the `Containers` feature to properly function.
 
 . Download the Windows images tarballs and binary from the RKE2 release artifacts list for the version of RKE2 that you are using.
 +
-*Using tar.gz image tarballs*
 
- ** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
+** *Using tar.gz image tarballs*
+---
+ *** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
 
 +
 [,powershell]
@@ -47,7 +48,7 @@ This will require a reboot for the `Containers` feature to properly function.
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-1809-amd64-images.tar.gz -OutFile /var/lib/rancher/rke2/agent/images/rke2-windows-1809-amd64-images.tar.gz
 ----
 
- ** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
+ *** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
 
 +
 [,powershell]
@@ -56,7 +57,7 @@ This will require a reboot for the `Containers` feature to properly function.
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-2004-amd64-images.tar.gz -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-2004-amd64-images.tar.gz
 ----
 
- ** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
+ *** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
 
 +
 [,powershell]
@@ -64,10 +65,11 @@ This will require a reboot for the `Containers` feature to properly function.
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-20H2-amd64-images.tar.gz -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-20H2-amd64-images.tar.gz
 ----
-+
-*Using tar.zst image tarballs*
+---
 
- ** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
+** *Using tar.zst image tarballs*
+
+ *** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
 
 +
 [,powershell]
@@ -76,7 +78,7 @@ This will require a reboot for the `Containers` feature to properly function.
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-1809-amd64-images.tar.zst -OutFile /var/lib/rancher/rke2/agent/images/rke2-windows-1809-amd64-images.tar.zst
 ----
 
- ** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
+ *** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
 
 +
 [,powershell]
@@ -85,18 +87,21 @@ This will require a reboot for the `Containers` feature to properly function.
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-2004-amd64-images.tar.zst -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-2004-amd64-images.tar.zst
 ----
 
- ** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
+ *** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
 
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
- Invoke-WebRequest hhttps://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-20H2-amd64-images.tar.zst -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-20H2-amd64-images.tar.zst
+ Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-20H2-amd64-images.tar.zst -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-20H2-amd64-images.tar.zst
 ----
 
- ** Use `rke2-windows-<BUILD_VERSION>-amd64.tar.gz` or `rke2-windows-<BUILD_VERSION>-amd64.tar.zst`. Zstandard offers better compression ratios and faster decompression speeds compared to pigz.
+ *** Use `rke2-windows-<BUILD_VERSION>-amd64.tar.gz` or `rke2-windows-<BUILD_VERSION>-amd64.tar.zst`. Zstandard offers better compression ratios and faster decompression speeds compared to pigz.
+ 
++
 
 . Ensure that the `/var/lib/rancher/rke2/agent/images/` directory exists on the node.
+
 +
 [,powershell]
 ----
@@ -105,7 +110,7 @@ This will require a reboot for the `Containers` feature to properly function.
 ----
 
 . Copy the compressed archive to `/var/lib/rancher/rke2/agent/images/` on the node, ensuring that the file extension is retained.
-. <<Install Windows RKE2>>
+. <<Install Windows RKE2>>.
 
 == Private Registry Method
 
@@ -115,11 +120,11 @@ Prior to RKE2 v1.20, private registries must use TLS, with a cert trusted by the
 
 . Add all the required system images to your private registry. A list of images can be obtained from the `.txt` file corresponding to each tarball referenced above, or you may `docker load` the airgap image tarballs, then tag and push the loaded images.
 . If using a private or self-signed certificate on the registry, add the registry's CA cert to the containerd registry configuration, or operating system's trusted certs for releases prior to v1.20.
-. <<install-windows-rke2,Install RKE2>> using the `system-default-registry` parameter, or use the xref:./containerd_registry_configuration.adoc[containerd registry configuration] to use your registry as a mirror for docker.io.
+. <<Install Windows RKE2>> using the `system-default-registry` parameter, or use the xref:./containerd_registry_configuration.adoc[containerd registry configuration] to use your registry as a mirror for docker.io.
 
 == Install Windows RKE2
 
-These steps should only be performed after completing one of either the <<windows-tarball-method,Tarball Method>> or <<private-registry-method,Private Registry Method>>.
+These steps should only be performed after completing one of either the <<Windows Tarball Method,Tarball Method>> or <<Private Registry Method>>.
 
 . Obtain the Windows RKE2 binary file `rke2-windows-amd64.exe`. Ensure the binary is named `rke2.exe` and place it in `c:/usr/local/bin`.
 +
@@ -139,7 +144,7 @@ token: <token from server node>
 "@
 ----
 +
-To read more about the config.yaml file, see the xref:./configuration.adoc#_configuration-file[Install Options documentation.]
+To read more about the config.yaml file, see the xref:./configuration.adoc#_configuration_file[Install Options documentation.]
 
 . Configure your PATH
 +

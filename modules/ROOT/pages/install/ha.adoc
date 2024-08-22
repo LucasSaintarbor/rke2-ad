@@ -33,7 +33,7 @@ This endpoint can also be used for accessing the Kubernetes API. So you can, for
 
 Note that the `rke2 server` process listens on port `9345` for new nodes to register. The Kubernetes API is served on port `6443`, as normal. Configure your load balancer accordingly.
 
-=== 2. Launch the first server node
+== 2. Launch the first server node
 
 The first server node establishes the secret token that other server or agent nodes will register with when connecting to the cluster.
 
@@ -71,7 +71,7 @@ node-taint:
 
 NOTE: The NGINX Ingress and Metrics Server addons will *not* be deployed when all nodes are tainted with `CriticalAddonsOnly`. If your server nodes are so tainted, these addons will remain pending until untainted agent nodes are added to the cluster.
 
-=== 3. Launch additional server nodes
+== 3. Launch additional server nodes
 
 Additional server nodes are launched much like the first, except that you must specify the `server` and `token` parameters so that they can successfully connect to the initial server node.
 
@@ -79,7 +79,7 @@ Additional server nodes are launched much like the first, except that you must s
 .Matching Flags
 ====
 It is important to match critical flags on your server nodes. For example, if you use the flag `--cluster-cidr=10.200.0.0/16` on your first server node, but don't set it on other server nodes, the nodes will fail to join. They will print errors such as: `failed to validate server configuration: critical configuration value mismatch.`
-See link:../reference/server_config.adoc#critical-configuration-values[Server Configuration] for more information on which flags must be set identically on server nodes.
+See xref:../reference/server_config.adoc#critical-configuration-values[Server Configuration] for more information on which flags must be set identically on server nodes.
 ====
 
 
@@ -98,9 +98,9 @@ As mentioned previously, you must have an odd number of server nodes in total.
 
 If an etcd datastore is found on disk either because that node has either initialized or joined a cluster already, the argument `--server` is ignored.
 
-=== 4. Confirm cluster is functional
+== 4. Confirm cluster is functional
 
-Once you've launched the `rke2 server` process on all server nodes, ensure that the cluster has come up properly with
+Once you've launched the `rke2 server` process on all server nodes, ensure that the cluster has come up properly with:
 
 [,bash]
 ----
@@ -116,11 +116,11 @@ By default, any `kubectl` command will require root user access, unless `RKE2_KU
 ====
 
 
-=== 5. Optional: Join Agent Nodes
+== 5. Optional: Join Agent Nodes
 
 Because RKE2 server nodes are schedulable by default, the minimum number of nodes for an HA RKE2 server cluster is three server nodes and zero agent nodes. To add nodes designated to run your apps and services, join agent nodes to your cluster.
 
-Joining agent nodes in an HA cluster is the same as link:quickstart.adoc#linux-agent-worker-node-installation[joining agent nodes in a single server cluster]. You just need to specify the URL the agent should register to and the token it should use.
+Joining agent nodes in an HA cluster is the same as xref:./quickstart.adoc#_linux_agent_worker_node_installation[joining agent nodes in a single server cluster]. You just need to specify the URL the agent should register to and the token it should use.
 
 [,yaml]
 ----

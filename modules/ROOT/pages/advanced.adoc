@@ -1,5 +1,4 @@
 = Advanced Options and Configuration
-:doctype: book
 
 This section contains advanced information describing the different ways you can run and manage RKE2.
 
@@ -25,7 +24,7 @@ To renew agent certificates, restart rke2-agent in agent nodes. Agent certificat
 systemctl restart rke2-agent
 ----
 
-It is also possible to rotate an individual service by passing the `--service` flag, for example: `rke2 certificate rotate --service api-server`. See link:./security/certificates.adoc#rotating-client-and-server-certificates-manually[Certificate Management] for more details.
+It is also possible to rotate an individual service by passing the `--service` flag, for example: `rke2 certificate rotate --service api-server`. See xref:./security/certificates.adoc#rotating-client-and-server-certificates-manually[Certificate Management] for more details.
 
 == Auto-Deploying Manifests
 

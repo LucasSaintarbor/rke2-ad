@@ -1,6 +1,4 @@
 = v1.24.X
-:hide_table_of_contents: true
-:sidebar_position: 7
 
 [CAUTION]
 .Upgrade Notice
@@ -284,9 +282,6 @@ https://projectcalico.docs.tigera.io/archive/v3.22/release-notes/#v3222[Calico v
 | https://github.com/cilium/cilium/releases/tag/v1.11.5[v1.11.5]
 | https://github.com/k8snetworkplumbingwg/multus-cni/releases/tag/v3.8[v3.8]
 |===
---
-
-{blank} +
 
 == Release v1.24.17+rke2r1
 
