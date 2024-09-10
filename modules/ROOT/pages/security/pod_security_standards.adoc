@@ -20,10 +20,10 @@ If running without a `profile` configuration:
 
 * RKE2 will apply a nonrestricted pod security standard via a configuration file which will enforce `privileged` mode throughout the cluster which allows a completely unrestricted mode to all pods in the cluster.
 
-RKE2 will put this configuration file at `/etc/rancher/rke2/rke2-pss.yaml`, the content of the configuration file varies according to the cis mode which you started rke2:
+RKE2 will put this configuration file at `/etc/rancher/rke2/rke2-pss.yaml`, the content of the configuration file varies according to the cis mode which you started RKE2:
 
-*CIS Mode*
-
+* *CIS Mode*
++
 [,yaml]
 ----
 apiVersion: apiserver.config.k8s.io/v1
@@ -46,8 +46,8 @@ plugins:
       namespaces: [kube-system, cis-operator-system, tigera-operator]
 ----
 
-*Non CIS Mode*
-
+* *Non CIS Mode*
++
 [,yaml]
 ----
 apiVersion: apiserver.config.k8s.io/v1
@@ -66,7 +66,7 @@ plugins:
       namespaces: []
 ----
 
-After placing this configuration file, rke2 will start the kube-apiserver with the following flag `--admission-control-config-file` which will be set to the path of the PSA config file.
+After placing this configuration file, RKE2 will start the kube-apiserver with the following flag `--admission-control-config-file` which will be set to the path of the PSA config file.
 
 If you want to override the default pod security standard configuration file, you can pass `pod-security-admission-config-file: <path-to-custom-psa-config-file>` to the RKE2 config file.
 

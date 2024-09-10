@@ -6,10 +6,10 @@ RKE2 can be installed in an air-gapped environment with two different methods. Y
 
 [CAUTION]
 ====
-If your node has NetworkManager installed and enabled, xref:../known_issues.adoc#_networkmanager[ensure that it is configured to ignore CNI-managed interfaces.]
+If your node has NetworkManager installed and enabled, xref:../known_issues.adoc#_networkmanager[ensure that it is configured to ignore CNI-managed interfaces].
 ====
 
-All files mentioned in the steps can be obtained from the assets of the desired released rke2 version https://github.com/rancher/rke2/releases[here].
+All files mentioned in the steps can be obtained from the assets of the desired released RKE2 version https://github.com/rancher/rke2/releases[here].
 
 If running on an air-gapped node with SELinux enabled, you must manually install the necessary SELinux policy RPM before performing these steps. See our xref:./methods.adoc#_rpm[RPM Documentation] to determine what you need.
 
@@ -59,10 +59,10 @@ RKE2 can be installed either by running the <<RKE2 Binary Install,binary>> direc
 
 === RKE2 Binary Install
 
-. Obtain the rke2 binary file `rke2.linux-amd64`.
+. Obtain the RKE2 binary file `rke2.linux-amd64`.
 . Ensure the binary is named `rke2` and place it in `/usr/local/bin`. Ensure it is executable.
 . Run the binary with the desired parameters. For example, if using the Private Registry Method, your config file would have the following:
-
++
 [,yaml]
 ----
 system-default-registry: "registry.example.com:5000"
@@ -92,4 +92,4 @@ curl -sfL https://get.rke2.io --output install.sh
 INSTALL_RKE2_ARTIFACT_PATH=/root/rke2-artifacts sh install.sh
 ----
 
-. Enable and run the service as outlined xref:./quickstart.adoc#_2_enable_the_rke2_server_service[here.]
+. Enable and run the service as outlined xref:./quickstart.adoc#_2_enable_the_rke2_server_service[here].

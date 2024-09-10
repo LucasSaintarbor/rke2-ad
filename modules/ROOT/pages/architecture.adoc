@@ -18,7 +18,7 @@ RKE2 brings together a number of Open Source technologies to make this all work:
  ** https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-proxy[Proxy]
 * https://etcd.io[etcd]
 * https://github.com/opencontainers/runc[runc]
-* https://containerd.io[containerd]/https://github.com/kubernetes/cri-api[cri]
+* https://containerd.io[containerd], https://github.com/kubernetes/cri-api[cri]
 * https://github.com/containernetworking/cni[CNI]: Canal (https://docs.tigera.io/calico/latest/about[Calico] & https://github.com/coreos/flannel[Flannel]), https://cilium.io[Cilium] or https://docs.tigera.io/calico/latest/about[Calico]
 * https://coredns.io[CoreDNS]
 * https://kubernetes.github.io/ingress-nginx[Ingress NGINX Controller]
@@ -32,11 +32,7 @@ All of these, except the NGINX Ingress Controller, are compiled and statically l
 === Content Bootstrap
 
 RKE2 sources binaries and manifests to run both _server_ and _agent_ nodes from the RKE2 Runtime image.
-This means RKE2 scans `/var/lib/rancher/rke2/agent/images/*.tar` for the https://hub.docker.com/r/rancher/rke2-runtime/tags[`rancher/rke2-runtime`]
-image (with a tag correlating to the output of `rke2 --version`) by default and if it cannot be found, attempts to pull
-it from the network (a.k.a. Docker Hub). RKE2 then extracts `/bin/` from the image, flattening it into
-`+/var/lib/rancher/rke2/data/${RKE2_DATA_KEY}/bin+` where `+${RKE2_DATA_KEY}+` represents a unique string identifying the
-image.
+This means RKE2 scans `/var/lib/rancher/rke2/agent/images/*.tar` for the https://hub.docker.com/r/rancher/rke2-runtime/tags[`rancher/rke2-runtime`] image (with a tag correlating to the output of `rke2 --version`) by default and if it cannot be found, attempts to pull it from the network (a.k.a. Docker Hub). RKE2 then extracts `/bin/` from the image, flattening it into `+/var/lib/rancher/rke2/data/${RKE2_DATA_KEY}/bin+` where `+${RKE2_DATA_KEY}+` represents a unique string identifying the image.
 
 For RKE2 to work as expected the runtime image must minimally provide:
 

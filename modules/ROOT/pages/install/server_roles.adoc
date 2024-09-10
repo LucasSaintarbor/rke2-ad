@@ -23,7 +23,6 @@ This first node will start etcd, and wait for additional `etcd` and/or `control-
 A dedicated `control-plane` node cannot be the first server in the cluster; there must be an existing node with the `etcd` role before joining dedicated `control-plane` nodes.
 ====
 
-
 To create a server with only the `control-plane` role, deploy a config with etcd disabled:
 
 [,yaml]

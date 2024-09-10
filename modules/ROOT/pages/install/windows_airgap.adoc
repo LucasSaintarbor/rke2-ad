@@ -10,11 +10,14 @@ You can either deploy using the `rke2-windows-<BUILD_VERSION>-amd64-images.tar.g
 * rke2-windows-2004-amd64-images.tar.gz
 * rke2-windows-20H2-amd64-images.tar.gz
 
-All files mentioned in the steps can be obtained from the assets of the desired released rke2 version https://github.com/rancher/rke2/releases[here].
+All files mentioned in the steps can be obtained from the assets of the desired released RKE2 version https://github.com/rancher/rke2/releases[here].
 
-==== Prepare the Windows Agent Node
+== Prepare the Windows Agent Node
 
-NOTE: The Windows Server Containers feature needs to be enabled for the RKE2 agent to work.
+[NOTE]
+====
+The Windows Server Containers feature needs to be enabled for the RKE2 agent to work.
+====
 
 Open a new Powershell window with Administrator privileges
 
@@ -36,81 +39,74 @@ This will require a reboot for the `Containers` feature to properly function.
 
 . Download the Windows images tarballs and binary from the RKE2 release artifacts list for the version of RKE2 that you are using.
 +
+--
+*Using tar.gz image tarballs*
 
-** *Using tar.gz image tarballs*
----
- *** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
-
+** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-1809-amd64-images.tar.gz -OutFile /var/lib/rancher/rke2/agent/images/rke2-windows-1809-amd64-images.tar.gz
 ----
-
- *** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
-
++
+** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-2004-amd64-images.tar.gz -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-2004-amd64-images.tar.gz
 ----
-
- *** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
-
++
+** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-20H2-amd64-images.tar.gz -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-20H2-amd64-images.tar.gz
 ----
----
+--
++
+--
+*Using tar.zst image tarballs*
 
-** *Using tar.zst image tarballs*
-
- *** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
-
+** *Windows Server 2019 LTSC (amd64) (OS Build 17763.2061)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-1809-amd64-images.tar.zst -OutFile /var/lib/rancher/rke2/agent/images/rke2-windows-1809-amd64-images.tar.zst
 ----
-
- *** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
-
++
+** *Windows Server SAC 2004 (amd64) (OS Build 19041.1110)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-2004-amd64-images.tar.zst -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-2004-amd64-images.tar.zst
 ----
-
- *** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
-
++
+** *Windows Server SAC 20H2 (amd64) (OS Build 19042.1110)*
 +
 [,powershell]
 ----
  $ProgressPreference = 'SilentlyContinue'
  Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-20H2-amd64-images.tar.zst -OutFile c:/var/lib/rancher/rke2/agent/images/rke2-windows-20H2-amd64-images.tar.zst
 ----
-
- *** Use `rke2-windows-<BUILD_VERSION>-amd64.tar.gz` or `rke2-windows-<BUILD_VERSION>-amd64.tar.zst`. Zstandard offers better compression ratios and faster decompression speeds compared to pigz.
- 
 +
-
+** Use `rke2-windows-<BUILD_VERSION>-amd64.tar.gz` or `rke2-windows-<BUILD_VERSION>-amd64.tar.zst`. Zstandard offers better compression ratios and faster decompression speeds compared to pigz.
++
+--
 . Ensure that the `/var/lib/rancher/rke2/agent/images/` directory exists on the node.
-
 +
 [,powershell]
 ----
  New-Item -Type Directory c:\usr\local\bin -Force
  New-Item -Type Directory c:\var\lib\rancher\rke2\bin -Force
 ----
-
 . Copy the compressed archive to `/var/lib/rancher/rke2/agent/images/` on the node, ensuring that the file extension is retained.
 . <<Install Windows RKE2>>.
+
 
 == Private Registry Method
 
@@ -125,7 +121,7 @@ Prior to RKE2 v1.20, private registries must use TLS, with a cert trusted by the
 == Install Windows RKE2
 
 These steps should only be performed after completing one of either the <<Windows Tarball Method,Tarball Method>> or <<Private Registry Method>>.
-
+--
 . Obtain the Windows RKE2 binary file `rke2-windows-amd64.exe`. Ensure the binary is named `rke2.exe` and place it in `c:/usr/local/bin`.
 +
 [,powershell]
@@ -133,7 +129,7 @@ These steps should only be performed after completing one of either the <<Window
 Invoke-WebRequest https://github.com/rancher/rke2/releases/download/v1.26.10%2Brke2r2/rke2-windows-amd64.exe -OutFile c:/usr/local/bin/rke2.exe
 ----
 
-. Configure the rke2-agent for Windows
+. Configure the rke2-agent for Windows.
 +
 [,powershell]
 ----
@@ -146,7 +142,7 @@ token: <token from server node>
 +
 To read more about the config.yaml file, see the xref:./configuration.adoc#_configuration_file[Install Options documentation.]
 
-. Configure your PATH
+. Configure your PATH.
 +
 [,powershell]
 ----
@@ -163,19 +159,23 @@ $env:PATH+=";c:\var\lib\rancher\rke2\bin;c:\usr\local\bin"
 ----
 c:\usr\local\bin\rke2.exe agent service --add
 ----
-
++
 For example, if using the Private Registry Method, your config file would have the following:
-
++
 [,yaml]
 ----
 system-default-registry: "registry.example.com:5000"
 ----
-
-NOTE: The `system-default-registry` parameter must specify only valid RFC 3986 URI authorities, i.e. a host and optional port.
-
++
+[NOTE] 
+====
+The `system-default-registry` parameter must specify only valid RFC 3986 URI authorities, i.e. a host and optional port.
+====
++
 If you would prefer to use CLI parameters only instead, run the binary with the desired parameters.
-
++
 [,powershell]
 ----
 c:/usr/local/bin/rke2.exe agent --token <> --server <>
 ----
+--

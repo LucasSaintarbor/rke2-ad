@@ -1,8 +1,6 @@
 = 介绍
-:sidebar_position: 1
-:slug: /
 
-image:/img/logo-horizontal-rke2.svg#gh-light-mode-only[]image:/img/logo-horizontal-rke2-dark.svg#gh-dark-mode-only[]
+image::logo-horizontal-rke2 (1).svg[block]
 
 RKE2，也称为 RKE Government，是 Rancher 的下一代 Kubernetes 发行版。
 

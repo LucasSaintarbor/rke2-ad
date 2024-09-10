@@ -70,7 +70,7 @@ ill also be used for the apiserver client load-balancer. (default: 6444) [%RKE2_
    --help, -h                                    show help
 ----
 
-This Windows Agent Configuration Reference was last updated using the v1.22.5+rke2r2 release
+This Windows Agent Configuration Reference was last updated using the v1.22.5+rke2r2 release.
 
 [,console]
 ----

@@ -1,6 +1,9 @@
 = Installation Methods
 
-IMPORTANT: If your node has NetworkManager installed and enabled, xref:../known_issues.adoc#networkmanager[ensure that it is configured to ignore CNI-managed interfaces.]
+[IMPORTANT] 
+====
+If your node has NetworkManager installed and enabled, xref:../known_issues.adoc#_networkmanager[ensure that it is configured to ignore CNI-managed interfaces].
+====
 
 RKE2 can be installed to a system in a number of ways, two of which are the preferred and supported methods. Those methods are tarball and RPM. The install script referenced in the Quick Start is a wrapper around these two methods.
 
@@ -26,7 +29,7 @@ curl -sfL https://get.rke2.io --output install.sh
 chmod +x install.sh
 ----
 
-==== Installation
+=== Installation
 
 The installation process defaults to the latest RKE2 version and no other qualifiers are necessary. However, if you want to specify a version, you should set the `INSTALL_RKE2_CHANNEL` environment variable. An example below:
 
@@ -53,13 +56,13 @@ To start the RPM install process, you need to get the installation script which 
 
 Files are installed with the prefix of `/usr` rather than `/usr/local`.
 
-==== Repositories
+=== Repositories
 
 Signed RPMs are published for RKE2 within the `rpm-testing.rancher.io` and `rpm.rancher.io` RPM repositories. If you run the https://get.rke2.io script on nodes supporting RPMs, it will use these RPM repos by default. But you can also install them yourself.
 
 The RPMs provide `systemd` units for managing `rke2`, but will need to be configured via configuration file before starting the services for the first time.
 
-==== Enterprise Linux 7/8/9
+=== Enterprise Linux 7/8/9
 
 In order to use the RPM repository, on a CentOS or RHEL system, run the following bash snippet:
 
@@ -84,7 +87,7 @@ gpgkey=https://rpm.rancher.io/public.key
 EOF
 ----
 
-==== Installation
+=== Installation
 
 After the repository is configured, you can run either of the following commands:
 

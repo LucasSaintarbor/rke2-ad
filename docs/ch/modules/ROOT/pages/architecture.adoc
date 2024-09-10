@@ -1,6 +1,4 @@
 = 下一代 Kubernetes 发行版剖析
-:sidebar_label: 架构
-:weight: 204
 
 === 架构概述
 

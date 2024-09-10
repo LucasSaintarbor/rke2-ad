@@ -1,5 +1,4 @@
 = 已知问题和限制
-:sidebar_label: 已知问题和限制
 
 本文介绍了 RKE2 当前已知的问题和限制。如果你遇到本文未记录的 RKE2 问题，请https://github.com/rancher/rke2/issues[提交一个新 issue]。
 

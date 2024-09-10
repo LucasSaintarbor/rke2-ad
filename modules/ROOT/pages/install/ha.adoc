@@ -2,11 +2,15 @@
 
 This section describes how to install a high availability (HA) RKE2 cluster. An HA RKE2 cluster consists of:
 
-* A *fixed registration address* that is placed in front of server nodes to allow other nodes to register with the cluster
-* An odd number (three recommended) of *server nodes* that will run etcd, the Kubernetes API, and other control plane services
-* Zero or more *agent nodes* that are designated to run your apps and services
+* A *fixed registration address* that is placed in front of server nodes to allow other nodes to register with the cluster.
+* An odd number (three recommended) of *server nodes* that will run etcd, the Kubernetes API, and other control plane services.
+* Zero or more *agent nodes* that are designated to run your apps and services.
 
-+++<details>++++++<summary>+++Why An Odd Number Of Server Nodes?+++</summary>+++ An etcd cluster must be comprised of an odd number of server nodes for etcd to maintain quorum. For a cluster with n servers, quorum is (n/2)+1. For any odd-sized cluster, adding one node will always increase the number of nodes necessary for quorum. Although adding a node to an odd-sized cluster appears better since there are more machines, the fault tolerance is worse. Exactly the same number of nodes can fail without losing quorum, but there are now more nodes that can fail.+++</details>+++
+[%collapsible]
+.Why An Odd Number Of Server Nodes?
+======
+An etcd cluster must be comprised of an odd number of server nodes for etcd to maintain quorum. For a cluster with n servers, quorum is (n/2)+1. For any odd-sized cluster, adding one node will always increase the number of nodes necessary for quorum. Although adding a node to an odd-sized cluster appears better since there are more machines, the fault tolerance is worse. Exactly the same number of nodes can fail without losing quorum, but there are now more nodes that can fail.
+======
 
 image:rke2-production-setup.svg[]
 
@@ -50,7 +54,6 @@ Example of RKE2 config file for first server:
 The RKE2 config file needs to be created manually. You can do that by running `touch /etc/rancher/rke2/config.yaml` as a privileged user.
 ====
 
-
 [,yaml]
 ----
 token: my-shared-secret
@@ -59,7 +62,7 @@ tls-san:
   - another-kubernetes-domain.com
 ----
 
-==== 2a. Optional: Consider server node taints
+=== 2a. Optional: Consider server node taints
 
 By default, server nodes will be schedulable and thus your workloads can get launched on them. If you wish to have a dedicated control plane where no user workloads will run, you can use taints. The `node-taint` parameter will allow you to configure nodes with taints. Here is an example of adding a node taint to the configuration file:
 
@@ -69,7 +72,10 @@ node-taint:
   - "CriticalAddonsOnly=true:NoExecute"
 ----
 
-NOTE: The NGINX Ingress and Metrics Server addons will *not* be deployed when all nodes are tainted with `CriticalAddonsOnly`. If your server nodes are so tainted, these addons will remain pending until untainted agent nodes are added to the cluster.
+[NOTE]
+====
+The NGINX Ingress and Metrics Server addons will *not* be deployed when all nodes are tainted with `CriticalAddonsOnly`. If your server nodes are so tainted, these addons will remain pending until untainted agent nodes are added to the cluster.
+====
 
 == 3. Launch additional server nodes
 
@@ -79,9 +85,8 @@ Additional server nodes are launched much like the first, except that you must s
 .Matching Flags
 ====
 It is important to match critical flags on your server nodes. For example, if you use the flag `--cluster-cidr=10.200.0.0/16` on your first server node, but don't set it on other server nodes, the nodes will fail to join. They will print errors such as: `failed to validate server configuration: critical configuration value mismatch.`
-See xref:../reference/server_config.adoc#critical-configuration-values[Server Configuration] for more information on which flags must be set identically on server nodes.
+See xref:../reference/server_config.adoc#_critical_configuration_values[Server Configuration] for more information on which flags must be set identically on server nodes.
 ====
-
 
 Example of RKE2 config file for additional server nodes:
 
@@ -114,7 +119,6 @@ You should see your server nodes in the Ready state.
 ====
 By default, any `kubectl` command will require root user access, unless `RKE2_KUBECONFIG_MODE` override is provided. Read more about it in https://docs.rke2.io/cluster_access[cluster access page].
 ====
-
 
 == 5. Optional: Join Agent Nodes
 

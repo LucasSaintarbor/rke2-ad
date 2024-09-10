@@ -4,7 +4,7 @@ Containerd can be configured to connect to private registries and use them to pu
 
 Upon startup, RKE2 will check to see if a `registries.yaml` file exists at `/etc/rancher/rke2/` and instruct containerd to use any registries defined in the file. If you wish to use a private registry, then you will need to create this file as root on each node that will be using the registry.
 
-Note that server nodes are schedulable by default. If you have not tainted the server nodes and will be running workloads on them, please ensure you also create the `registries.yaml` file on each server as well.
+Server nodes are schedulable by default. If you have not tainted the server nodes and will be running workloads on them, please ensure you also create the `registries.yaml` file on each server as well.
 
 NOTE: Prior to RKE2 v1.20, containerd registry configuration is not honored for the initial RKE2 node bootstrapping, only for Kubernetes workloads that are launched after the node is joined to the cluster. Consult the xref:./airgap.adoc[airgap installation documentation] if you plan on using this containerd registry feature to bootstrap nodes.
 

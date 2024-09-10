@@ -10,7 +10,7 @@ If the certificates are expired or have fewer than 90 days remaining before they
 
 As of v1.21.8+rke2r1, certificates can also be rotated manually. To do this, it is best to stop the rke2-server process, rotate the certificates, then start the process up again:
 
-[,sh]
+[,bash]
 ----
 systemctl stop rke2-server
 rke2 certificate rotate
@@ -19,12 +19,12 @@ systemctl start rke2-server
 
 To renew agent certificates, restart rke2-agent in agent nodes. Agent certificates are renewed every time the agent starts.
 
-[,sh]
+[,bash]
 ----
 systemctl restart rke2-agent
 ----
 
-It is also possible to rotate an individual service by passing the `--service` flag, for example: `rke2 certificate rotate --service api-server`. See xref:./security/certificates.adoc#rotating-client-and-server-certificates-manually[Certificate Management] for more details.
+It is also possible to rotate an individual service by passing the `--service` flag, for example: `rke2 certificate rotate --service api-server`. See xref:security/certificates.adoc#_rotating_client_and_server_certificates_manually[Certificate Management] for more details.
 
 == Auto-Deploying Manifests
 
@@ -51,6 +51,7 @@ Add the necessary `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` variables to the en
 
 RKE2 will automatically add the cluster internal Pod and Service IP ranges and cluster DNS domain to the list of `NO_PROXY` entries. You should ensure that the IP address ranges used by the Kubernetes nodes themselves (i.e. the public and private IPs of the nodes) are included in the `NO_PROXY` list, or that the nodes can be reached through the proxy.
 
+[,bash]
 ----
 HTTP_PROXY=http://your-proxy.example.com:8888
 HTTPS_PROXY=http://your-proxy.example.com:8888
@@ -59,6 +60,7 @@ NO_PROXY=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 
 If you want to configure the proxy settings for containerd without affecting RKE2 and the Kubelet, you can prefix the variables with `CONTAINERD_`:
 
+[,bash]
 ----
 CONTAINERD_HTTP_PROXY=http://your-proxy.example.com:8888
 CONTAINERD_HTTPS_PROXY=http://your-proxy.example.com:8888
@@ -71,13 +73,16 @@ RKE2 agents can be configured with the options `node-label` and `node-taint` whi
 
 If you want to change node labels and taints after node registration you should use `kubectl`. Refer to the official Kubernetes documentation for details on how to add https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints] and https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[node labels].
 
-= How Agent Node Registration Works
+== How Agent Node Registration Works
 
 Agent nodes are registered via a websocket connection initiated by the `rke2 agent` process, and the connection is maintained by a client-side load balancer running as part of the agent process.
 
 Agents register with the server using the cluster secret portion of the join token, along with a randomly generated node-specific password, which is stored on the agent at `/etc/rancher/node/password`. The server will store the passwords for individual nodes as Kubernetes secrets, and any subsequent attempts must use the same password. Node password secrets are stored in the `kube-system` namespace with names using the template `<host>.node-password.rke2`. These secrets are deleted when the corresponding Kubernetes node is deleted.
 
-NOTE: Prior to RKE2 v1.20.2 servers stored passwords on disk at `/var/lib/rancher/rke2/server/cred/node-passwd`.
+[NOTE] 
+====
+Prior to RKE2 v1.20.2 servers stored passwords on disk at `/var/lib/rancher/rke2/server/cred/node-passwd`.
+====
 
 If the `/etc/rancher/node` directory of an agent is removed, the password file should be recreated for the agent prior to startup, or the entry removed from the server or Kubernetes cluster (depending on the RKE2 version).
 
@@ -119,7 +124,6 @@ disable:
 It is the cluster operator's responsibility to ensure that components are disabled or replaced with care, as the server charts play important roles in cluster operability.  Refer to the link:./architecture.adoc#server-charts[architecture overview] for more information on the individual system charts role within the cluster.
 ====
 
-
 == Installation on classified AWS regions or networks with custom AWS API endpoints
 
 In public AWS regions, to ensure RKE2 is cloud-enabled, and capable of auto-provisioning certain cloud resources, config RKE2 with:
@@ -131,10 +135,10 @@ cloud-provider-name: aws
 ----
 
 When installing RKE2 on classified regions (such as SC2S or C2S), there are a few additional pre-requisites to be aware of to ensure RKE2 knows how and where to securely communicate with the appropriate AWS endpoints:
-
+--
 . Ensure all the common AWS cloud-provider https://rancher.com/docs/rke/latest/en/config-options/cloud-providers/aws/[prerequisites] are met.  These are independent of regions and are always required.
 . Ensure RKE2 knows where to send API requests for `ec2` and `elasticloadbalancing` services by creating a `cloud.conf` file, the below is an example for the `us-iso-east-1` (C2S) region:
-
++
 [,yaml]
 ----
 # /etc/rancher/rke2/cloud.conf
@@ -150,20 +154,20 @@ When installing RKE2 on classified regions (such as SC2S or C2S), there are a fe
   URL=https://elasticloadbalancing.us-iso-east-1.c2s.ic.gov
   SigningRegion=us-iso-east-1
 ----
-
++
 Alternatively, if you are using https://docs.aws.amazon.com/vpc/latest/privatelink/endpoint-services-overview.html[private AWS endpoints], ensure the appropriate `URL` is used for each of the private endpoints.
-
++
 . Ensure the appropriate AWS CA bundle is loaded into the system's root ca trust store.  This may already be done for you depending on the AMI you are using.
-
++
 [,bash]
 ----
 # on CentOS/RHEL 7/8
 cp <ca.pem> /etc/pki/ca-trust/source/anchors/
 update-ca-trust
 ----
-
++
 . Configure RKE2 to use the `aws` cloud-provider with the custom `cloud.conf` created in step 1:
-
++
 [,yaml]
 ----
 # /etc/rancher/rke2/config.yaml
@@ -172,14 +176,16 @@ cloud-provider-name: aws
 cloud-provider-config: "/etc/rancher/rke2/cloud.conf"
 ...
 ----
-
++
 . xref:install/methods.adoc[Install] RKE2 normally (most likely in an xref:install/airgap.adoc[airgapped] capacity)
 . Validate successful installation by confirming the existence of AWS metadata on cluster node labels with `kubectl get nodes --show-labels`
+--
 
 == Control Plane Component Resource Requests/Limits
 
 The following options are available under the `server` sub-command for RKE2. The options allow for specifying CPU requests and limits for the control plane components within RKE2.
 
+[,bash]
 ----
    --control-plane-resource-requests value       (components) Control Plane resource requests [$RKE2_CONTROL_PLANE_RESOURCE_REQUESTS]
    --control-plane-resource-limits value         (components) Control Plane resource limits [$RKE2_CONTROL_PLANE_RESOURCE_LIMITS]
@@ -209,7 +215,7 @@ control-plane-resource-requests:
   - etcd-cpu=1000m
 ----
 
-The unit values for CPU/memory are identical to Kubernetes resource units (See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes[Resource Limits in Kubernetes])
+The unit values for CPU/memory are identical to Kubernetes resource units (See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes[Resource Limits in Kubernetes]).
 
 == Extra Control Plane Component Volume Mounts
 
@@ -249,8 +255,7 @@ The following options are available under the `server` sub-command for RKE2. The
 
 === RO Host Path Volume Mount
 
-In order to mount a volume as read only, append `:ro` to the end of the volume mount.
-`/source/volume/path/on/host:/destination/volume/path/in/staticpod:ro`
+In order to mount a volume as read only, append `:ro` to the end of the volume mount: `/source/volume/path/on/host:/destination/volume/path/in/staticpod:ro`
 
 Multiple volume mounts can be specified for the same component by passing the flag values as an array in the config file.
 
@@ -259,7 +264,6 @@ Multiple volume mounts can be specified for the same component by passing the fl
 ====
 Prior to April 2024 releases (v1.27.13+rke2r1, v1.28.9+rke2r1, v1.29.4+rke2r1), only directories can be mounted.
 ====
-
 
 [,yaml]
 ----
@@ -314,17 +318,62 @@ Depending on the underlying OS, some steps need to be fulfilled
 
 [tabs,sync-group-id=GPU Operating System]
 ====
-Tab SLES::
+SLES::
 +
-The NVIDIA operator cannot automatically install kernel drivers on SLES. NVIDIA drivers must be manually installed on all GPU nodes before deploying the operator in the cluster. It can be done with the following steps: ``` # Assuming you are using sle15sp5, if different, change the url accordingly sudo zypper addrepo --refresh 'https://download.nvidia.com/suse/sle15sp5' NVIDIA sudo zypper --gpg-auto-import-keys refresh sudo zypper install -y ---auto-agree-with-licenses nvidia-gl-G06 nvidia-video-G06 nvidia-compute-utils-G06 ``` Then reboot. If everything worked correctly, after the reboot, you should see the NVRM and GCC version of the driver when executing the command: ``` cat /proc/driver/nvidia/version ``` Finally, create the symlink: ``` sudo ln -s /sbin/ldconfig /sbin/ldconfig.real ``` 
+--
+The NVIDIA operator cannot automatically install kernel drivers on SLES. NVIDIA drivers must be manually installed on all GPU nodes before deploying the operator in the cluster. It can be done with the following steps: 
 
-Tab Ubuntu::
-+
-The NVIDIA operator can automatically install kernel drivers on Ubuntu using the `nvidia-driver-daemonset`, although not all versions are supported. You can also pre-install them manually and the operator will detect them: ``` sudo apt install nvidia-driver-535-server ``` Then reboot. If everything worked correctly, after the reboot, you should see a correct output when executing the command: ``` cat /proc/driver/nvidia/version ``` 
+[,bash]
+----
+# Assuming you are using sle15sp5, if different, change the url accordingly sudo zypper addrepo --refresh 'https://download.nvidia.com/suse/sle15sp5' NVIDIA sudo zypper --gpg-auto-import-keys refresh sudo zypper install -y ---auto-agree-with-licenses nvidia-gl-G06 nvidia-video-G06 nvidia-compute-utils-G06
+----
 
-Tab RHEL::
+Then reboot. 
+
+If everything worked correctly, after the reboot, you should see the NVRM and GCC version of the driver when executing the command: 
+
+[,bash]
+----
+cat /proc/driver/nvidia/version
+----
+
+Finally, create the symlink:
+[,bash]
+----
+sudo ln -s /sbin/ldconfig /sbin/ldconfig.real ``` 
+----
+--
+
+Ubuntu::
 +
-The NVIDIA operator can automatically install kernel drivers on RHEL using the `nvidia-driver-daemonset`. You would only need to create the symlink: ``` sudo ln -s /sbin/ldconfig /sbin/ldconfig.real ```
+--
+The NVIDIA operator can automatically install kernel drivers on Ubuntu using the `nvidia-driver-daemonset`, although not all versions are supported. You can also pre-install them manually and the operator will detect them: 
+
+[,bash]
+----
+sudo apt install nvidia-driver-535-server
+----
+
+Then reboot. 
+
+If everything worked correctly, after the reboot, you should see a correct output when executing the command: 
+
+[,bash]
+----
+cat /proc/driver/nvidia/version
+----
+--
+
+RHEL::
++
+--
+The NVIDIA operator can automatically install kernel drivers on RHEL using the `nvidia-driver-daemonset`. You would only need to create the symlink:
+
+[,bash]
+---- 
+sudo ln -s /sbin/ldconfig /sbin/ldconfig.real
+----
+--
 ====
 
 Once the OS is ready and RKE2 is running, install the GPU Operator with the following yaml manifest:
@@ -350,42 +399,45 @@ spec:
 
 [CAUTION]
 ====
-The NVIDIA operator restarts containerd with a hangup call which restarts RKE2
+The NVIDIA operator restarts containerd with a hangup call which restarts RKE2.
 ====
-
 
 After one minute approximately, you can make the following checks to verify that everything worked as expected:
 
-1 - Check if the operator detected the driver and GPU correctly:
-
+. Check if the operator detected the driver and GPU correctly:
++
+[,bash]
 ----
 kubectl get node $NODENAME -o jsonpath='{.metadata.labels}' | jq | grep "nvidia.com"
 ----
-
-You should see labels specifying driver and GPU (e.g. nvidia.com/gpu.machine or nvidia.com/cuda.driver.major)
-
-2 - Check if the gpu was added (by nvidia-device-plugin-daemonset) as an allocatable resource in the node:
-
++
+You should see labels specifying driver and GPU (e.g. nvidia.com/gpu.machine or nvidia.com/cuda.driver.major).
++
+. Check if the gpu was added (by nvidia-device-plugin-daemonset) as an allocatable resource in the node:
++
+[,bash]
 ----
 kubectl get node $NODENAME -o jsonpath='{.status.allocatable}' | jq
 ----
-
-You should see `"nvidia.com/gpu":` followed by the number of gpus in the node
-
-3 - Check that the container runtime binary was installed by the operator (in particular by the `nvidia-container-toolkit-daemonset`):
-
++
+You should see `"nvidia.com/gpu":` followed by the number of gpus in the node.
++
+. Check that the container runtime binary was installed by the operator (in particular by the `nvidia-container-toolkit-daemonset`):
++
+[,bash]
 ----
 ls /usr/local/nvidia/toolkit/nvidia-container-runtime
 ----
-
-4 - Verify if containerd config was updated to include the nvidia container runtime:
-
++
+. Verify if containerd config was updated to include the nvidia container runtime:
++
+[,bash]
 ----
 grep nvidia /etc/containerd/config.toml
 ----
-
-5 - Run a pod to verify that the GPU resource can successfully be scheduled on a pod and the pod can detect it
-
++
+. Run a pod to verify that the GPU resource can successfully be scheduled on a pod and the pod can detect it.
++
 [,yaml]
 ----
 apiVersion: v1

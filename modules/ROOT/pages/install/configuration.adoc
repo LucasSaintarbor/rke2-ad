@@ -11,7 +11,6 @@ By default, RKE2 will launch with the values present in the YAML file located at
 The RKE2 config file needs to be created manually. You can do that by running `touch /etc/rancher/rke2/config.yaml` as a privileged user. If the configuration is changed after starting RKE2, the service must be restarted to apply the new configuration.
 ====
 
-
 An example of a basic `server` config file is below:
 
 [,yaml]
@@ -48,9 +47,8 @@ Finally, the location of the config file can be changed either through the cli a
 [IMPORTANT]
 .Version Gate
 ====
-Available as of https://github.com/rancher/rke2/releases/tag/v1.21.2%2Brke2r1[v1.21.2+rke2r1]
+Available as of https://github.com/rancher/rke2/releases/tag/v1.21.2%2Brke2r1[v1.21.2+rke2r1].
 ====
-
 
 Multiple configuration files are supported. By default, configuration files are read from `/etc/rancher/rke2/config.yaml` and `/etc/rancher/rke2/config.yaml.d/*.yaml` in alphabetical order.
 
@@ -97,7 +95,7 @@ node-taint:
 
 == Configuring the Linux Installation Script
 
-As mentioned in the xref:./quickstart.adoc[Quick-Start Guide], you can use the installation script available at https://get.rke2.io to install RKE2 as a service.
+As mentioned in the xref:./quickstart.adoc[Quick Start Guide], you can use the installation script available at https://get.rke2.io to install RKE2 as a service.
 
 The simplest form of this command is running, as root user or through `sudo`, as follows:
 
@@ -163,7 +161,7 @@ OPTIONS
 -Channel           Channel to use for fetching RKE2 download URL (Default: "stable")
 -Method            The installation method to use. Currently tar or choco installation supported. (Default: "tar")
 -Type              Type of RKE2 service. Only the "agent" type is supported on Windows. (Default: "agent")
--Version           Version of rke2 to download from Github
+-Version           Version of RKE2 to download from Github
 -TarPrefix         Installation prefix when using the tar installation method. (Default: `C:/usr/local` unless `C:/usr/local` is read-only or has a dedicated mount point, in which case `C:/opt/rke2` is used instead)
 -Commit            (experimental/agent) Commit of RKE2 to download from temporary cloud storage. If set, this forces `--Method=tar`. Intended for development purposes only.
 -AgentImagesDir    Installation path for airgap images when installing from CI commit. (Default: `C:/var/lib/rancher/rke2/agent/images`)

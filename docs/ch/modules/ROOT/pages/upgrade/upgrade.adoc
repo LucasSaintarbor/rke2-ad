@@ -1,5 +1,4 @@
 = 升级 RKE2 集群
-:sidebar_label: 概述
 
 本节将介绍如何升级 RKE2 集群。
 

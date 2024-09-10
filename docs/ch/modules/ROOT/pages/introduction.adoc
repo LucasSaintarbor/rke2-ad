@@ -1,6 +1,4 @@
 = 介绍
-:sidebar_position: 1
-:slug: /
 
 image:/img/logo-horizontal-rke2.svg#gh-light-mode-only[]image:/img/logo-horizontal-rke2-dark.svg#gh-dark-mode-only[]
 
